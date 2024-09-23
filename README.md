@@ -19,13 +19,20 @@ sudo update-locale LC_ALL="en_GB.UTF-8"
 sudo update-locale LANGUAGE="en_GB:en"
 ```
 
-2. Clone the repository
+2. [OPTIONAL] Install the dependencies for Raspberry pi
+``` bash
+sudo apt install git python3-pip
+sudo apt install portaudio19-dev
+sudo apt install libsndfile1
+```
+
+3. Clone the repository
 ``` bash
 git clone https://github.com/obenchekroun/cry-baby-hadi
 cd cry-baby-hadi
 ```
 
-3. Create a virtual environnement and activate it
+4. Create a virtual environnement and activate it
 ``` bash
 python3 -m venv .venv # to create
 source .venv/bin/activate
@@ -33,19 +40,13 @@ source .venv/bin/activate
 
 in order to deactivate the virtual environnement, you can use `deactivate`, `exit` or *ctrl-D*
 
-4. [OPTIONAL] Install the dependencies for Raspberry pi
-``` bash
-sudo apt install git python3-pip
-pip3 install poetry
-sudo apt install portaudio19-dev
-sudo apt install libsndfile1
-```
 5. Install the dependencies with Poetry using the command :
 ``` bash
+pip3 install poetry
 poetry install
 ```
 
-Depending on your hardware architecture, Poetry should automatically install the correct version of TensorFlow or TensorFlow Lite. Tested on Mabook Pro M2 Max (2023) Rpi 4 (bookworm 64-bit) and RPi zero 2W (bookworm 64 bit).
+Depending on your hardware architecture, Poetry should automatically install the correct version of TensorFlow or TensorFlow Lite. Tested on Mabook Pro M2 Max (2023) and Rpi 4 (bookworm 64-bit)..
 
 6. setup your huggingface token : 
 You will need a [hugging face account](https://huggingface.co/welcome) and an API token. Once you have the token, copy `example.env` to `.env` and add your token there.
