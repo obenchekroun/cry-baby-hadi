@@ -1,17 +1,57 @@
-# Cry Baby
+# Cry Baby Hadi
 
-I recently had my first kid, to celebrate this I built Cry Baby, a small piece of software which provides a probability that your baby is crying by continuously recording audio, chunking it into 4-second clips, and feeding them into a Convolutional Neural Network (CNN).
+Cry Baby is a small piece of software which provides a probability that your baby is crying by continuously recording audio, chunking it into 4-second clips, and feeding them into a Convolutional Neural Network (CNN).
+It is made to run on macOS or linux, with a few added dependencies to install for Raspberry pi (Bookworm 64-bit).
+
+## Acknowledgments
+Based on Cry Baby : [BaronBonnet's Cry baby](https://github.com/BaronBonet/cry-baby). This project has been largely based on cry baby with a few tweaks for my needs. All credit goes to them for making this awesome project.
 
 ## Installation
 
-Create a virtual environment and install the dependencies with Poetry using the command `poetry install`.
+1. Prepare your hardware if needed
+  - flash the microSD card with Bookworm 64-bit
+  - setup wi-fi and ssh
+  - Update locale
 
-Depending on your hardware architecture, Poetry should automatically install the correct version of TensorFlow or TensorFlow Lite. This has been tested on a 2022 M1 MacBook Pro and an Intel NUC running Ubuntu 20.04.
+``` bash
+locale
+sudo update-locale LC_ALL="en_GB.UTF-8"
+sudo update-locale LANGUAGE="en_GB:en"
+```
+
+2. Clone the repository
+``` bash
+git clone https://github.com/obenchekroun/cry-baby-hadi
+cd cry-baby-hadi
+```
+
+3. Create a virtual environnement and activate it
+``` bash
+python3 -m venv .venv # to create
+source ./venv/bin/activate
+```
+
+in order to deactivate the virtual environnement, you can use `deactivate`, `exit` or *ctrl-D*
+
+4. [OPTIONAL] Install the dependencies for Raspberry pi
+``` bash
+sudo apt install git python3-pip
+pip3 install poetry
+sudo apt install portaudio19-dev
+sudo apt install libsndfile1
+```
+5. Install the dependencies with Poetry using the command `poetry install`.
+Depending on your hardware architecture, Poetry should automatically install the correct version of TensorFlow or TensorFlow Lite. Tested on Mabook Pro M2 Max (2022) Rpi 4 (bookworm 64-bit) and RPi zero 2W (bookworm 64 bit).
+
+6. setup your huggingface token : 
+You will need a [hugging face account](https://huggingface.co/welcome) and an API token. Once you have the token, copy `example.env` to `.env` and add your token there.
+
+``` bash
+cp .example.env .env
+nano .env
+```
 
 ## Usage
-
-You will need a [hugging face account](https://huggingface.co/welcome) and an API token. Once you have the token copy `example.env` to `.env` and add your token there.
-
 A Makefile is provided for running Cry Baby.
 
 ```bash
@@ -22,7 +62,7 @@ Every 4 seconds, Cry Baby will print the probability of a baby crying in each au
 
 ## About the model
 
-The codebase for training the model is currently not included in this repository due to its preliminary state. If there is interest, I plan to refine and share it.
+The codebase for training the model is currently not included in this repository due to its preliminary state. See original repository for updates.
 
 ### Training data
 
