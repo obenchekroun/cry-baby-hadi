@@ -3,6 +3,8 @@
 Cry Baby is a small piece of software which provides a probability that your baby is crying by continuously recording audio, chunking it into 4-second clips, and feeding them into a Convolutional Neural Network (CNN).
 It is made to run on macOS or linux, with a few added dependencies to install for Raspberry pi (Bookworm 64-bit).
 
+It is configured to send a message to a MQTT cluster on threshold detection.
+
 ## Acknowledgments
 Based on Cry Baby : [BaronBonnet's Cry baby](https://github.com/BaronBonet/cry-baby). This project has been largely based on cry baby with a few tweaks for my needs. All credit goes to them for making this awesome project.
 
@@ -55,6 +57,17 @@ You will need a [hugging face account](https://huggingface.co/welcome) and an AP
 cp .example.env .env
 nano .env
 ```
+
+7. setup your MQTT credentials and websocket :
+You need to update `cry_baby/app/core/service.py` to adjust the following lines :
+
+``` python
+self.client.username_pw_set("<login>", "<password>") # credentials to access MQTT cluster
+self.client.connect("<Cluster URL>", 8883)  # CLuster URL
+self.client.publish("push_notif", payload=text, qos=1) # Optional : change the MQTT topic where the palyload is published
+```
+
+8. Setup MQTT Push client on your phone to receive notifications
 
 ## Usage
 A Makefile is provided for running Cry Baby.
