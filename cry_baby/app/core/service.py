@@ -30,7 +30,7 @@ class CryBabyService(ports.Service):
         # enable TLS for secure connection
         self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
         # set username and password
-        self.client.username_pw_set("<login>", "<passwor>")
+        self.client.username_pw_set("<login>", "<password>")
         # connect to HiveMQ Cloud on port 8883 (default for MQTT)
         self.client.connect("<Cluster URL>", 8883)
 
