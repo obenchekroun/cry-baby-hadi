@@ -1,0 +1,11 @@
+[Unit]
+Description=Provides a probability that your baby is crying by continuously recording audio.
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=${HOME}/cry-baby-hadi/
+ExecStart=dbus-run-session -- bash ${HOME}/cry-baby-hadi/run.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -78,6 +78,34 @@ make run
 
 Every 4 seconds, Cry Baby will print the probability of a baby crying in each audio clip it records. And saves the timestamp, a pointer to the audio file, and the probability to a CSV file.
 
+
+### Setting up a `systemd` service on startup
+
+- Configure and start a `systemd` service to launch on startup :
+```bash
+sudo chmod +x run.sh # make the run script executable
+cp cry-baby-hadi.service.template cry-baby-hadi.service
+nano cry-baby-hadi.service
+```
+Edit the file with the correct paths to the scripts and the project.
+
+- Then to enable the service
+``` bash
+sudo cp cry-baby-hadi.service /etc/systemd/system
+sudo systemctl enable epaper-frame-daemon.service #to launch service on startup
+sudo systemctl daemon-reload
+sudo journalctl -u epaper-frame-daemon.service #to get journal
+```
+
+- The service can be started, stopped, restarted and checked :
+``` bash
+$ sudo systemctl start epaper-frame-daemon.service
+$ sudo systemctl stop epaper-frame-daemon.service
+$ sudo systemctl restart epaper-frame-daemon.service
+$ systemctl status epaper-frame-daemon.service
+```
+
+
 ## About the model
 
 The codebase for training the model is currently not included in this repository due to its preliminary state. See original repository for updates.
