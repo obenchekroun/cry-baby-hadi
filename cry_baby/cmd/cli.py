@@ -57,7 +57,7 @@ def run_continously(
 
 def main():
     logger = ColorfulCLILogger()
-    temp_path = pathlib.Path("/tmp")
+    temp_path = pathlib.Path("tmp/")
     settings = PyaudioRecordingSettings(
         audio_file_format=pyaudio.paInt16,
         number_of_audio_signals=1,

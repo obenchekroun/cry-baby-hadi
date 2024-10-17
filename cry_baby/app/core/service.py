@@ -71,14 +71,18 @@ class CryBabyService(ports.Service):
     def _handle_files_written(
         self, file_written_queue: queue.Queue, classifier: ports.Classifier
     ):
+        last_exec = 0
         while True:
             file_path = file_written_queue.get()
             self.logger.debug(f"File written: {file_path}")
             prediction = classifier.classify(file_path)
             if (prediction > 0.1):
-                # a single publish, this can also be done in loops, etc.
-                text = f'Bébé pleure avec une probabilité de {round(prediction*100,1)} %'
-                self.client.publish("push_notif", payload=text, qos=1)
+                now = time.time()
+                if now - last_exec >= 15:
+                    # a single publish, this can also be done in loops, etc.
+                    text = f'Bébé pleure avec un facteur de {round(prediction*100,1)} %'
+                    self.client.publish("push_notif", payload=text, qos=1)
+                    last_exec = now
             self.logger.debug(f"Prediction: {prediction}")
             self.repository.save(file_path, prediction)
 
