@@ -22,6 +22,7 @@ tflite-runtime = { version = "^2.14.0", platform = "linux" }
 tensorflow-macos = { version = "^2.13.0", platform = "darwin", markers = "platform_machine == 'arm64'"}
 
 huggingface-hub = "^0.20.1"
+paho-mqtt = "^2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
