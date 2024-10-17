@@ -91,18 +91,18 @@ Edit the file with the correct paths to the scripts and the project.
 
 - Then to enable the service
 ``` bash
-sudo cp cry-baby-hadi.service /etc/systemd/system
-sudo systemctl enable epaper-frame-daemon.service #to launch service on startup
+sudo mv cry-baby-hadi.service /etc/systemd/system
+sudo systemctl enable cry-baby-hadi.service #to launch service on startup
 sudo systemctl daemon-reload
-sudo journalctl -u epaper-frame-daemon.service #to get journal
+sudo journalctl -u cry-baby-hadi.service #to get journal
 ```
 
 - The service can be started, stopped, restarted and checked :
 ``` bash
-$ sudo systemctl start epaper-frame-daemon.service
-$ sudo systemctl stop epaper-frame-daemon.service
-$ sudo systemctl restart epaper-frame-daemon.service
-$ systemctl status epaper-frame-daemon.service
+$ sudo systemctl start cry-baby-hadi.service
+$ sudo systemctl stop cry-baby-hadi.service
+$ sudo systemctl restart cry-baby-hadi.service
+$ systemctl status cry-baby-hadi.service
 ```
 
 

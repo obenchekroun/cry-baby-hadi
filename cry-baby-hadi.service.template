@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=${HOME}/cry-baby-hadi/
-ExecStart=dbus-run-session -- bash ${HOME}/cry-baby-hadi/run.sh
+WorkingDirectory=/home/pi/cry-baby-hadi/
+ExecStart=/usr/bin/bash /home/pi/cry-baby-hadi/run.sh
 
 [Install]
 WantedBy=multi-user.target
