@@ -24,25 +24,30 @@ class CryBabyService(ports.Service):
         self.recorder = recorder
         self.repository = repository
 
-        self.client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-        self.client.on_connect = self.on_connect
+        mqtt_server = os.getenv("MQTT_SERVER")
+        if (not mqtt_server):
+            self.use_mqtt = False
+        else:
+            self.use_mqtt = True
+            self.client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+            self.client.on_connect = self.on_connect
 
-        # enable TLS for secure connection
-        self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-        # set username and password
-        self.client.username_pw_set("<login>", "<password>")
-        # connect to HiveMQ Cloud on port 8883 (default for MQTT)
-        self.client.connect("<Cluster URL>", 8883)
+            # enable TLS for secure connection
+            self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+            # set username and password
+            self.client.username_pw_set("<login>", "<password>")
+            # connect to HiveMQ Cloud on port 8883 (default for MQTT)
+            self.client.connect("<Cluster URL>", 8883)
 
-        # setting callbacks, use separate functions like above for better visibility
-        self.client.on_subscribe = self.on_subscribe
-        self.client.on_message = self.on_message
-        self.client.on_publish = self.on_publish
+            # setting callbacks, use separate functions like above for better visibility
+            self.client.on_subscribe = self.on_subscribe
+            self.client.on_message = self.on_message
+            self.client.on_publish = self.on_publish
 
-        # subscribe to all topics of encyclopedia by using the wildcard "#"
-        self.client.subscribe("#", qos=1)
+            # subscribe to all topics of encyclopedia by using the wildcard "#"
+            self.client.subscribe("#", qos=1)
 
-        self.client.loop_start()
+            self.client.loop_start()
 
     def evaluate_from_microphone(
         self,
@@ -76,13 +81,14 @@ class CryBabyService(ports.Service):
             file_path = file_written_queue.get()
             self.logger.debug(f"File written: {file_path}")
             prediction = classifier.classify(file_path)
-            if (prediction > 0.1):
-                now = time.time()
-                if now - last_exec >= 15:
-                    # a single publish, this can also be done in loops, etc.
-                    text = f'Bébé pleure avec un facteur de {round(prediction*100,1)} %'
-                    self.client.publish("push_notif", payload=text, qos=1)
-                    last_exec = now
+            if (self.use_mqtt):
+                if (prediction > 0.1):
+                    now = time.time()
+                    if now - last_exec >= 15:
+                        # a single publish, this can also be done in loops, etc.
+                        text = f'Bébé pleure avec un facteur de {round(prediction*100,1)} %'
+                        self.client.publish("push_notif", payload=text, qos=1)
+                        last_exec = now
             self.logger.debug(f"Prediction: {prediction}")
             self.repository.save(file_path, prediction)
 
