@@ -2,6 +2,7 @@ import queue
 import threading
 from typing import Optional
 import time
+import os
 
 import paho.mqtt.client as paho
 from paho import mqtt
@@ -25,7 +26,9 @@ class CryBabyService(ports.Service):
         self.repository = repository
 
         mqtt_server = os.getenv("MQTT_SERVER")
-        if (not mqtt_server):
+        mqtt_user = os.getenv("MQTT_USER")
+        mqtt_password = os.getenv("MQTT_PASSWORD")
+        if (not mqtt_server or not mqtt_user or not mqtt_password):
             self.use_mqtt = False
         else:
             self.use_mqtt = True
@@ -35,9 +38,9 @@ class CryBabyService(ports.Service):
             # enable TLS for secure connection
             self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
             # set username and password
-            self.client.username_pw_set("<login>", "<password>")
+            self.client.username_pw_set(mqtt_user, mqtt_password)
             # connect to HiveMQ Cloud on port 8883 (default for MQTT)
-            self.client.connect("<Cluster URL>", 8883)
+            self.client.connect(mqtt_server, 8883)
 
             # setting callbacks, use separate functions like above for better visibility
             self.client.on_subscribe = self.on_subscribe
