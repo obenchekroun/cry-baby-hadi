@@ -51,23 +51,21 @@ poetry install
 Depending on your hardware architecture, Poetry should automatically install the correct version of TensorFlow or TensorFlow Lite. Tested on Mabook Pro M2 Max (2023) and Rpi 4 (bookworm 64-bit)..
 
 6. setup your huggingface token : 
-You will need a [hugging face account](https://huggingface.co/welcome) and an API token. Once you have the token, copy `example.env` to `.env` and add your token there.
+You will need a [hugging face account](https://huggingface.co/welcome) and an API token. Once you have the token, copy `example.env` to `.env` and add your token there. If you want to use MQTT posting and notification, you need to also put your MQTT credentials and websocket address in this file. Otherwise, remove all the MQTT lines.
 
 ``` bash
 cp .example.env .env
 nano .env
 ```
 
-7. setup your MQTT credentials and websocket :
-You need to update `cry_baby/app/core/service.py` to adjust the following lines :
-
-``` python
-self.client.username_pw_set("<login>", "<password>") # credentials to access MQTT cluster
-self.client.connect("<Cluster URL>", 8883)  # CLuster URL
-self.client.publish("push_notif", payload=text, qos=1) # Optional : change the MQTT topic where the palyload is published
+``` bash
+HUGGING_FACE_TOKEN="<your-token>"
+MQTT_SERVER="<your-server>"
+MQTT_USER="<your-username>"
+MQTT_PASSWORD="<your-password>"
 ```
 
-8. Setup MQTT Push client on your phone to receive notifications
+7. *[OPTIONAL]* Setup MQTT Push client on your phone to receive notifications
 
 ## Usage
 A Makefile is provided for running Cry Baby.
