@@ -85,11 +85,11 @@ class CryBabyService(ports.Service):
             self.logger.debug(f"File written: {file_path}")
             prediction = classifier.classify(file_path)
             if (self.use_mqtt):
-                if (prediction > 0.1):
+                if (prediction > 0.001):
                     now = time.time()
                     if now - last_exec >= 15:
                         # a single publish, this can also be done in loops, etc.
-                        text = f'Bébé pleure avec un facteur de {round(prediction*100,1)} %'
+                        text = f'Bébé pleure avec un facteur de {round(prediction*100,1)}'
                         self.client.publish("push_notif", payload=text, qos=1)
                         last_exec = now
             self.logger.debug(f"Prediction: {prediction}")
